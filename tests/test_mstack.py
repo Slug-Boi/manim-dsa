@@ -5,7 +5,7 @@ from manim_dsa.m_collection.m_stack import *
 
 class Random(Scene):
     def construct(self):
-        stack = MStack([1], style=StackStyle.BLUE)
+        stack = MStack([1], style=MStackStyle.BLUE)
         self.play(Create(stack))
         self.play(stack.animate.append(8))
         self.play(stack.animate.pop())

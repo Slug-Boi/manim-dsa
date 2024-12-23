@@ -83,15 +83,15 @@ class MArray(MCollection):
         The direction in which to arrange the elements. Default is RIGHT.
     margin : float, optional
         The margin between elements in the array. Default is 0.
-    style : ArrayStyle._DefaultStyle, optional
-        The style configuration for the elements. Default is ArrayStyle.DEFAULT.
+    style : MArrayStyle._DefaultStyle, optional
+        The style configuration for the elements. Default is MArrayStyle.DEFAULT.
     """
 
     def __init__(
         self,
         arr: list = [],
         direction: Vector3D = RIGHT,
-        style: ArrayStyle._DefaultStyle = ArrayStyle.DEFAULT,
+        style: MArrayStyle._DefaultStyle = MArrayStyle.DEFAULT,
     ):
         self._index_enabled: bool = False
         self._index_dir = None

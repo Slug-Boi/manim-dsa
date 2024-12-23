@@ -19,15 +19,15 @@ class MStack(MCollection):
         The initial list of values to populate the stack. Default is an empty list.
     buff : float, optional
         The buffer (margin) between elements in the stack. Default is 0.1.
-    style : StackStyle._DefaultStyle, optional
-        The style configuration for the stack elements. Default is StackStyle.DEFAULT.
+    style : MStackStyle._DefaultStyle, optional
+        The style configuration for the stack elements. Default is MStackStyle.DEFAULT.
     """
 
     def __init__(
         self,
         arr: list = [],
         buff: float = 0.1,
-        style: StackStyle._DefaultStyle = StackStyle.DEFAULT,
+        style: MStackStyle._DefaultStyle = MStackStyle.DEFAULT,
     ):
         super().__init__(arr, UP, buff, style)
 

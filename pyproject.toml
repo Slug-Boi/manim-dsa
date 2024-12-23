@@ -9,7 +9,7 @@ repository="https://github.com/F4bbi/manim-dsa"
 packages = [{include = "manim_dsa"}]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.9"
 manim = "^0.18.1"
 
 [tool.poetry.group.dev]

@@ -12,17 +12,17 @@
 </p>
 <hr />
 
-**Manim DSA**, short for *Manim Data Structures & Algorithms*, is a [Manim](https://www.manim.community/) plugin designed to animate common data structures and algorithms. Whether you are an educator looking to enhance your lectures, a student seeking to better understand these concepts, or a content creator making educational videos, Manim DSA provides a robust toolkit to bring abstract concepts to life.
+**Manim DSA**, short for _Manim Data Structures & Algorithms_, is a [Manim](https://www.manim.community/) plugin designed to animate common data structures and algorithms. Whether you are an educator looking to enhance your lectures, a student seeking to better understand these concepts, or a content creator making educational videos, Manim DSA provides a robust toolkit to bring abstract concepts to life.
 
 ## Table of Contents:
 
--  [Installation](#installation)
--  [Importing](#importing)
--  [Usage](#usage)
--  [Documentation](#documentation)
--  [Help with Manim DSA](#help-with-manim-dsa)
--  [Contributing](#contributing)
--  [License](#license)
+- [Installation](#installation)
+- [Importing](#importing)
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Help with Manim DSA](#help-with-manim-dsa)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
@@ -66,7 +66,7 @@ class Example(Scene):
         }
 
         mArray = (
-            MArray([1, 2, 3], style=ArrayStyle.BLUE)
+            MArray([1, 2, 3], style=MArrayStyle.BLUE)
             .add_indexes()
             .scale(0.9)
             .add_label(Text("Array", font="Cascadia Code"))
@@ -74,14 +74,14 @@ class Example(Scene):
         )
 
         mStack = (
-            MStack([3, 7, 98, 1], style=StackStyle.GREEN)
+            MStack([3, 7, 98, 1], style=MStackStyle.GREEN)
             .scale(0.8)
             .add_label(Text("Stack", font="Cascadia Code"))
             .move_to(ORIGIN)
         )
 
         mGraph = (
-            MGraph(graph, nodes_and_positions, GraphStyle.PURPLE)
+            MGraph(graph, nodes_and_positions, MGraphStyle.PURPLE)
             .add_label(Text("Graph", font="Cascadia Code"))
             .to_edge(RIGHT, 1)
         )

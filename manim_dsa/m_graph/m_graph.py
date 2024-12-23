@@ -34,15 +34,15 @@ class MGraph(VDict, Labelable):
         The graph data, which can be weighted or unweighted.
     nodes_position : dict[str, Vector3D], optional
         A dictionary mapping node labels to their positions as 3D vectors. Defaults to an empty dict.
-    style : :class:`GraphStyle`, optional
-        The visual style to be applied to the graph. Defaults to GraphStyle.DEFAULT.
+    style : :class:`MGraphStyle`, optional
+        The visual style to be applied to the graph. Defaults to MGraphStyle.DEFAULT.
     """
 
     def __init__(
         self,
         graph: GraphType,
         nodes_position: dict[str, Vector3D] = {},
-        style=GraphStyle.DEFAULT,
+        style=MGraphStyle.DEFAULT,
     ):
         super().__init__()
 
@@ -50,9 +50,9 @@ class MGraph(VDict, Labelable):
         self.edges: dict[tuple[str, str], MGraph.Edge] = {}
         self.style = style
 
-        for node in graph:
-            pos: Vector3D = nodes_position.get(node, ORIGIN)
-            self.add_node(node, pos)
+        for src, _ in graph.items() if isinstance(graph, dict) else enumerate(graph):
+            pos: Vector3D = nodes_position.get(str(src), ORIGIN)
+            self.add_node(str(src), pos)
 
         if isinstance(graph, (list, dict)):
             # The graph can be list of list or dict of list
@@ -75,10 +75,14 @@ class MGraph(VDict, Labelable):
                         dest, weight = dest
                         self.add_edge(str(src), dest, weight)
 
+        # TODO: This is not efficient
+        if not nodes_position:
+            self.node_layout()
+
     class Node(VGroup, Highlightable):
         """A class that represents a node (or vertex) of the graph.
 
-         Parameters
+        Parameters
         ----------
         circle : Circle
             The circular shape that visually represents the node.

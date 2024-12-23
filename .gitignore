@@ -59,7 +59,7 @@ docs/build/
 docs/_static/
 docs/_templates/
 docs/source/_autosummary/
-docs/source/reference/
+docs/source/reference_autosummary/
 docs/source/_build/
 docs/rendering_times.csv
 #i18n

@@ -6,7 +6,7 @@ from manim_dsa.m_collection.m_array import *
 class Init(Scene):
     def construct(self):
         mArray = (
-            MArray([1, 2, 3, 4, 5], style=ArrayStyle.BLUE)
+            MArray([1, 2, 3, 4, 5], style=MArrayStyle.BLUE)
             .add_indexes()
             .scale(0.9)
             .add_label(Text("Array", font="Cascadia Code"))
@@ -19,7 +19,7 @@ class RandomOperations(Scene):
     def construct(self):
         arr = [1, 2, 3]
         mArray = (
-            MArray(arr, style=ArrayStyle.PURPLE)
+            MArray(arr, style=MArrayStyle.PURPLE)
             .add_indexes(DOWN)
             .add_label(Text("Array", **DEFAULT_LABEL_ARGS), DOWN)
         )

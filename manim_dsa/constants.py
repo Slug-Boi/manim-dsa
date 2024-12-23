@@ -3,7 +3,7 @@ from __future__ import annotations
 from manim import *
 
 
-class GraphStyle:
+class MGraphStyle:
     class _DefaultStyle:
         def __init__(self):
             self.node_circle: dict = {"color": WHITE, "stroke_width": 6, "radius": 0.33}
@@ -120,7 +120,7 @@ class CollectionStyle:
     GREEN = _GreenStyle()
 
 
-class StackStyle(CollectionStyle):
+class MStackStyle(CollectionStyle):
     class _DefaultStyle(CollectionStyle._DefaultStyle):
         def __init__(self):
             super().__init__()
@@ -144,7 +144,7 @@ class StackStyle(CollectionStyle):
     GREEN = _GreenStyle()
 
 
-class ArrayStyle(CollectionStyle):
+class MArrayStyle(CollectionStyle):
     class _DefaultStyle(CollectionStyle._DefaultStyle):
         def __init__(self):
             super().__init__()
