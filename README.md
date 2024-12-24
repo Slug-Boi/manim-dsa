@@ -98,7 +98,7 @@ https://github.com/user-attachments/assets/05307dc9-65d9-4262-ae32-3fb53068c8e4
 
 ## Documentation
 
-Work in progess.
+Documentation is in progress at [ReadtheDocs](https://manim-dsa.readthedocs.io).
 
 ## Help with Manim DSA
 
