@@ -7,6 +7,7 @@ class MGraphStyle:
     class _DefaultStyle:
         def __init__(self):
             self.node_circle: dict = {"color": WHITE, "stroke_width": 6, "radius": 0.33}
+            self.node_rectangle: dict = {"color": WHITE, "stroke_width": 6}
             self.node_label: dict = {
                 "color": WHITE,
                 "font": "Cascadia Code",
