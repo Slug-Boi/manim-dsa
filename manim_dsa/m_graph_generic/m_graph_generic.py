@@ -46,22 +46,25 @@ class MGraphGeneric(VDict, Labelable):
         nodes_position: dict[str, Vector3D] = {},
         style=MGraphStyle.DEFAULT,
         value_dict: dict[str, str] = {},
+        edge_arrows: bool = True
     ):
         super().__init__()
 
         self.nodes: dict[str, MGraphGeneric.Node] = {}
         self.edges: dict[tuple[str, str], MGraphGeneric.Edge] = {}
         self.style = style
+        self.edge_arrows = edge_arrows
 
         for src, val in graph.items() if isinstance(graph, dict) else enumerate(graph):
             if isinstance(val, tuple):
                 pos: Vector3D = nodes_position.get(str(src), ORIGIN)
-                self.add_node(value_dict.get(str(src), str(src)), val[1], pos)
+                self.add_node(value_dict.get(str(src), str(src)), val[1], str(src), pos)
             else:
                 pos: Vector3D = nodes_position.get(str(src), ORIGIN)
                 self.add_node(
                     value_dict.get(str(src), str(src)),
                     Circle(**self.style.node_circle),
+                    str(src),
                     pos,
                 )
 
@@ -103,9 +106,9 @@ class MGraphGeneric(VDict, Labelable):
             The text label associated with the node.
         """
 
-        def __init__(self, rectangle: Mobject, label: Text):
+        def __init__(self, mobject: Mobject, label: Text):
             super().__init__()
-            self.rectangle = rectangle.set_z_index(2)
+            self.rectangle = mobject.set_z_index(2)
             self.label = label.set_z_index(3)
             self._add_highlight(self.rectangle)
 
@@ -596,13 +599,17 @@ class MGraphGeneric(VDict, Labelable):
             )
             return position
 
-    def add_node(self, name: str, mobject: Mobject, position: Point3D = ORIGIN) -> Self:
+    def add_node(self, name: str, mobject: Mobject, id: str, position: Point3D = ORIGIN) -> Self:
         """Adds a new node to the graph with a specified name and position.
 
         Parameters
         ----------
         name : str
             The name of the node to be added.
+        mobject : Mobject
+            The Mobject to be used as the node.
+        id : str
+            The id for referencing the node.
         position : Point3D, optional
             The 3D position where the node will be placed. Defaults to ORIGIN.
 
@@ -615,14 +622,16 @@ class MGraphGeneric(VDict, Labelable):
             mobject.move_to(position),
             Text(str(name), **self.style.node_label).move_to(position),
         )
-        self.nodes[name] = new_node
-        self.add([(name, new_node)])
+        self.nodes[id] = new_node
+        self.add([(id, new_node)])
         return self
 
     @override_animate(add_node)
     def _add_node_animation(
         self,
         name: str,
+        mobject: Mobject,
+        id: str,
         position: Point3D = ORIGIN,
         anim_args=None,
     ) -> Animation:
@@ -632,6 +641,8 @@ class MGraphGeneric(VDict, Labelable):
         ----------
         name : str
             The name of the node to be added.
+        id : str
+            The id for referencing the node.
         position : Point3D, optional
             The 3D position where the node will be placed. Defaults to ORIGIN.
         anim_args : dict, optional
@@ -642,13 +653,13 @@ class MGraphGeneric(VDict, Labelable):
         Animation
             The animation for adding the node.
         """
-        self.add_node(name, position)
-        return Create(self.nodes[name], **anim_args)
+        self.add_node(name, mobject, id, position)
+        return Create(self.nodes[id], **anim_args)
 
     def add_edge(
         self,
-        node1_name: str,
-        node2_name: str,
+        node1_id: str,
+        node2_id: str,
         weight: float = None,
         label_distance: float = 0.2,
     ) -> Self:
@@ -670,22 +681,30 @@ class MGraphGeneric(VDict, Labelable):
         self
             The updated instance of the :class:'MGraph' with the new edge added.
         """
-        edge_name = (node1_name, node2_name)
-        edge_name_rev = (node2_name, node1_name)
+        edge_name = (node1_id, node2_id)
+        edge_name_rev = (node2_id, node1_id)
 
-        node1 = self.nodes[node1_name].rectangle
-        node2 = self.nodes[node2_name].rectangle
+        node1 = self.nodes[node1_id].rectangle
+        node2 = self.nodes[node2_id].rectangle
 
         reverse_exists = edge_name_rev in self.edges
 
         line = Line(**self.style.edge_line)
 
-        new_edge = self.StraightEdge(
-            line,
-            node1,
-            node2,
-            not reverse_exists,
-        )
+        if self.edge_arrows:
+            new_edge = self.StraightEdge(
+                line,
+                node1,
+                node2,
+                not reverse_exists,
+            )
+        else:
+            new_edge = self.StraightEdge(
+                line,
+                node1,
+                node2,
+                False,
+            )
         if weight:
             new_edge.weighted(
                 Text(str(weight), **self.style.edge_weight),

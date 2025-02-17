@@ -97,7 +97,7 @@ class MArray(MCollection):
     ):
         self._index_enabled: bool = False
         self._index_dir = None
-        if len(arr) != len(custom_indices):
+        if len(arr) != len(custom_indices) and custom_indices:
             raise Exception("The length of the array and custom indices must be equal.")
         self.custom_indices = custom_indices
 
