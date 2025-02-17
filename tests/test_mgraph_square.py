@@ -4,14 +4,14 @@ from manim import *
 
 from manim_dsa.m_collection.m_array import *
 from manim_dsa.m_collection.m_stack import *
-from manim_dsa.m_graph_square.m_graph import *
+from manim_dsa.m_graph_generic.m_graph_generic import *
 from manim_dsa.m_variable.m_variable import *
 
 
 class IterativeDfs(Scene):
     def dfs(self, graph, start):
         mGraph = (
-            MGraph(graph, style=MGraphStyle.PURPLE)
+            MGraphGeneric(graph, style=MGraphStyle.PURPLE)
             .scale(0.7)
             .node_layout()
             .to_edge(LEFT)
@@ -85,7 +85,7 @@ class Random(Scene):
             "6": RIGHT * 4 + UP,
             "7": RIGHT * 7 + UP,
         }
-        mGraph = MGraph(graph, nodes_and_positions, style=MGraphStyle.GREEN).move_to(
+        mGraph = MGraphGeneric(graph, nodes_and_positions, style=MGraphStyle.GREEN).move_to(
             ORIGIN
         )
 
@@ -110,7 +110,7 @@ class ShowBackwardsEdge(Scene):
             "2": RIGHT * 2 + UP * 2,
         }
 
-        mGraph = MGraph(graph, nodes_and_positions, style=MGraphStyle.GREEN)
+        mGraph = MGraphGeneric(graph, nodes_and_positions, style=MGraphStyle.GREEN)
 
         self.play(Create(mGraph))
         self.play(mGraph.animate.show_backward_edge("0", "2", 3, 0))
@@ -147,7 +147,7 @@ class Test(Scene):
             "1": RIGHT,
             "2": DOWN,
         }
-        mGraph = MGraph(graph, nodes_and_pos)
+        mGraph = MGraphGeneric(graph, nodes_and_pos)
         self.play(Create(mGraph))
         self.wait()
 
@@ -183,7 +183,7 @@ class ReadMe(Scene):
         )
 
         mGraph = (
-            MGraph(graph, nodes_and_positions, MGraphStyle.PURPLE)
+            MGraphGeneric(graph, nodes_and_positions, MGraphStyle.PURPLE)
             .add_label(Text("Graph", font="Cascadia Code"))
             .to_edge(RIGHT, 1)
         )
@@ -280,7 +280,7 @@ class DfsRecursive(Scene):
         }
 
         mGraph = (
-            MGraph(graph, nodes_and_positions, style=MGraphStyle.BLUE)
+            MGraphGeneric(graph, nodes_and_positions, style=MGraphStyle.BLUE)
             .move_to(ORIGIN)
             .shift(DOWN / 2)
         )
@@ -312,7 +312,7 @@ class Kruskal(Scene):
             rank[xroot] += 1
 
     def kruskal(self, graph, nodes_and_positions):
-        mGraph = MGraph(graph, nodes_and_positions, style=MGraphStyle.PURPLE).move_to(
+        mGraph = MGraphGeneric(graph, nodes_and_positions, style=MGraphStyle.PURPLE).move_to(
             ORIGIN
         )
         self.play(Create(mGraph))
@@ -389,7 +389,7 @@ class Prim(Scene):
     def prim(self, graph, nodes_and_positions, start):
         pq = []
         visited = {}
-        mGraph = MGraph(graph, nodes_and_positions, style=MGraphStyle.PURPLE).move_to(
+        mGraph = MGraphGeneric(graph, nodes_and_positions, style=MGraphStyle.PURPLE).move_to(
             ORIGIN
         )
         self.play(Create(mGraph))

@@ -26,7 +26,7 @@ type GraphType = (
 )
 
 
-class MGraph(VDict, Labelable):
+class MGraphGeneric(VDict, Labelable):
     """Manim Graph: a class for visualizing the graph structure using the Manim animation engine.
 
     Parameters
@@ -45,27 +45,34 @@ class MGraph(VDict, Labelable):
         graph: GraphType,
         nodes_position: dict[str, Vector3D] = {},
         style=MGraphStyle.DEFAULT,
+        value_dict: dict[str, str] = {},
     ):
         super().__init__()
 
-        self.nodes: dict[str, MGraph.Node] = {}
-        self.edges: dict[tuple[str, str], MGraph.Edge] = {}
+        self.nodes: dict[str, MGraphGeneric.Node] = {}
+        self.edges: dict[tuple[str, str], MGraphGeneric.Edge] = {}
         self.style = style
 
         for src, val in graph.items() if isinstance(graph, dict) else enumerate(graph):
             if isinstance(val, tuple):
                 pos: Vector3D = nodes_position.get(str(src), ORIGIN)
-                self.add_node(str(src), val[1], pos)
+                self.add_node(value_dict.get(str(src), str(src)), val[1], pos)
             else:
                 pos: Vector3D = nodes_position.get(str(src), ORIGIN)
-                self.add_node(str(src), Circle(**self.style.node_circle) ,pos)
+                self.add_node(
+                    value_dict.get(str(src), str(src)),
+                    Circle(**self.style.node_circle),
+                    pos,
+                )
 
         if isinstance(graph, (list, dict)):
             # The graph can be list of list or dict of list
             for src, destinations in (
                 graph.items() if isinstance(graph, dict) else enumerate(graph)
             ):
-                for dest in destinations[0] if isinstance(destinations, tuple) else destinations:
+                for dest in (
+                    destinations[0] if isinstance(destinations, tuple) else destinations
+                ):
                     # If the graph is not weighted
                     # Example: {'0': ['1', '2']}
                     if isinstance(dest, str):
@@ -375,7 +382,7 @@ class MGraph(VDict, Labelable):
             tuple[Point3D, Point3D]
                 A tuple containing two Point3D objects representing the start and end points of the line.
             """
-            direction = Line(node1.get_center(), node2.get_center()).get_unit_vector()          
+            direction = Line(node1.get_center(), node2.get_center()).get_unit_vector()
 
             angle = np.arctan2(direction[1], direction[0]) * 180 / np.pi
 
@@ -399,14 +406,16 @@ class MGraph(VDict, Labelable):
             if isinstance(node1, Circle):
                 direction = Line(node1.get_center(), end).get_unit_vector()
                 start = node1.get_center() + direction * (node1.get_width() / 2)
-                #print("start",start)
+                # print("start",start)
 
             if isinstance(node2, Circle):
-                direction = Line(node2.get_center(),start).get_unit_vector()
-                #print("direction",direction)
-                #TODO: Yea this shit aint working. Figure out why this specific check just breaks on outgoing
+                direction = Line(node2.get_center(), start).get_unit_vector()
+                # print("direction",direction)
+                # TODO: Yea this shit aint working. Figure out why this specific check just breaks on outgoing
                 # line from circle
-                end = node2.get_center() + direction * 1.0000000000001 * (node2.get_width() / 2)
+                end = node2.get_center() + direction * 1.0000000000001 * (
+                    node2.get_width() / 2
+                )
 
                 # print("end",end)
                 # print("start",start)
@@ -531,7 +540,9 @@ class MGraph(VDict, Labelable):
                 A tuple containing two `Point3D` objects representing the start and end points of the edge.
             """
 
-            edge_direction = Line(node1.get_center(), node2.get_center()).get_unit_vector()
+            edge_direction = Line(
+                node1.get_center(), node2.get_center()
+            ).get_unit_vector()
             edge_angle = acos(edge_direction[0])
             if edge_direction[1] < 0:
                 edge_angle = -edge_angle
@@ -585,7 +596,7 @@ class MGraph(VDict, Labelable):
             )
             return position
 
-    def add_node(self, name: str, mobject: Mobject ,position: Point3D = ORIGIN) -> Self:
+    def add_node(self, name: str, mobject: Mobject, position: Point3D = ORIGIN) -> Self:
         """Adds a new node to the graph with a specified name and position.
 
         Parameters
@@ -962,14 +973,10 @@ class MGraph(VDict, Labelable):
         for edge in self.edges:
             node1 = self.nodes[edge[0]].rectangle
             node2 = self.nodes[edge[1]].rectangle
-            start, end = self.edges[edge]._get_line_start_end(
-                node1,
-                node2
-            )
+            start, end = self.edges[edge]._get_line_start_end(node1, node2)
             mEdge = self.edges[edge]
             # Workaround cause tipped lines can't be changed of start/end, we have to delete the tip for a moment
 
-            
             if mEdge.line.has_tip():
                 tip = mEdge.line.get_tip()
                 mEdge.line.remove(tip)
