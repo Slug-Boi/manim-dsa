@@ -1,24 +1,32 @@
-[tool.poetry]
+[project]
 name = "manim-dsa"
 version = "0.2.0"
 description = "A Manim plugin to animate common data structures."
-authors = ["Fabio Missagia <fabio.missagia@gmail.com>"]
-license = "MIT"
+authors = [{ name = "Fabio Missagia", email = "fabio.missagia@gmail.com" }]
+requires-python = ">=3.9"
 readme = "README.md"
-repository="https://github.com/F4bbi/manim-dsa"
-packages = [{include = "manim_dsa"}]
+license = "MIT"
+dependencies = ["manim>=0.19.0,<0.20"]
 
-[tool.poetry.dependencies]
-python = ">=3.9"
-manim = "^0.19.0"
+[project.urls]
+Repository = "https://github.com/F4bbi/manim-dsa"
 
-[tool.poetry.group.dev]
-optional = true
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.group.dev.dependencies]
-black = "^24.8.0"
-isort = "^5.13.2"
-ruff = "^0.6.2"
+[dependency-groups]
+dev = [
+    "black>=24.8.0,<25",
+    "isort>=5.13.2,<6",
+    "ruff>=0.6.2,<0.7",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["manim_dsa"]
+
+[tool.hatch.build.targets.wheel]
+include = ["manim_dsa"]
 
 [tool.black]
 line-length = 88
@@ -76,10 +84,3 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
   # unused variable
   "F841",
 ]
-
-[project]
-requires-python = ">=3.9"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"

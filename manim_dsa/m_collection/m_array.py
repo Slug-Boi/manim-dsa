@@ -91,12 +91,17 @@ class MArray(MCollection):
         self,
         arr: list = [],
         direction: Vector3D = RIGHT,
+        margin: float = 0,
+        custom_indices: list[str] = [],
         style: MArrayStyle._DefaultStyle = MArrayStyle.DEFAULT,
     ):
         self._index_enabled: bool = False
         self._index_dir = None
+        if len(arr) != len(custom_indices) and custom_indices:
+            raise Exception("The length of the array and custom indices must be equal.")
+        self.custom_indices = custom_indices
 
-        super().__init__(arr, direction, 0, style)
+        super().__init__(arr, direction, margin, style)
 
         self._hidden_element = MIndexedElement(
             self._hidden_element.square,
@@ -326,9 +331,16 @@ class MArray(MCollection):
         self._hidden_element.add_index(
             Text("0", **self.style.index, fill_opacity=0), direction, buff
         )
-        for i in range(len(self.elements)):
-            self.elements[i].add_index(
-                Text(str(i), **self.style.index), direction, buff
-            )
+        if len(self.custom_indices) > 0:
+            for i in range(len(self.elements)):
+                # TODO if index jumps more than 2 digits then add ... between boxes
+                self.elements[i].add_index(
+                    Text(self.custom_indices[i], **self.style.index), direction, buff
+                )
+        else:
+            for i in range(len(self.elements)):
+                self.elements[i].add_index(
+                    Text(str(i), **self.style.index), direction, buff
+                )
 
         return self
